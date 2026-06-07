@@ -1,4 +1,5 @@
 import randomname, os, random
+from subprocess import run
 
 # Code that executes some linux commands | tested on script_test.py
 scriptCode = """
@@ -21,6 +22,9 @@ pathExist = os.path.exists('/tmp/audit_lab')
 if pathExist == False:
     os.mkdir('/tmp/audit_lab')
     
+def createScriptFile(path):
+    with open(f'{path}/script.py', 'w') as file:
+        file.write(scriptCode)
 
 for i in range(3):
     print("voltaws")
@@ -37,16 +41,23 @@ for i in range(3):
     match folderSize:
         case 1:
             os.mkdir(mainPath)
+            createScriptFile(mainPath)
         case 2: 
             os.makedirs(subPath)
+            createScriptFile(subPath)
         case 3:
             os.makedirs(subSubPath)
+            createScriptFile(subSubPath)
     i=i+1
-    print(f'The option was: {folderSize}')
 
-    with open('./script.py', 'w') as file:
-        file.write(scriptCode)
 
+run("find /tmp/audit_lab -type f -name 'script.py' -exec python3 {} \; ", shell=True)
+
+
+
+
+
+    
 
 
   
